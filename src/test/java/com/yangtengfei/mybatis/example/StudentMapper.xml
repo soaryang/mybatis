@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+       Copyright 2009-2020 the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yangtengfei.mybatis.example.StudentMapper">
+    <!--然后在需要二级缓存的sql语句的配置中加上:userCache=“true”-->
+    <!--<cache></cache>-->
+    <!--
+        如果要实现 mybatis 的二级缓存，一般来说有如下两种方式:
+        1. 采用 mybatis 内置的 cache 机制。
+        2. 采用三方 cache 框架， 比如ehcache, oscache 等等.
+
+        采用 mybatis 内置的 cache 机制。
+        在 sql 语句映射文件中加入 <cache /> 语句 , 并且相应的 model 类要实现 java Serializable 接口，因为缓存说白了就是序列化与反序列化的过程，所以需要实现这个接口. 单纯的 <cache /> 表示如下意思:
+
+        1.所有在映射文件里的 select 语句都将被缓存。
+        2.所有在映射文件里 insert,update 和 delete 语句会清空缓存。
+        3.缓存使用“最近很少使用”算法来回收
+        4.缓存不会被设定的时间所清空。
+        5.每个缓存可以存储 1024 个列表或对象的引用（不管查询出来的结果是什么） 。
+        6.缓存将作为“读/写”缓存，意味着获取的对象不是共享的且对调用者是安全的。不会有其它的调用者或线程潜在修改。
+        缓存元素的所有特性都可以通过属性来修改。比如：
+        -->
+    <!--<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/>-->
+
+    <select id="selectStudent" parameterType="student" resultType="student">
+      select * from student where uid = #{uid}
+   </select>
+
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="uid"  parameterType="com.yangtengfei.mybatis.example.Student"  >
+        <!--<selectKey resultType="int" keyProperty="uid" keyColumn="uid" order="AFTER">-->
+            <!--select last_insert_id()-->
+        <!--</selectKey>-->
+        insert into student(deptId) value(#{deptId})
+    </insert>
+</mapper>
